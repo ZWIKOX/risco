@@ -8,18 +8,27 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface RegisterForm {
     name: string;
     email: string;
+    role: ROLE;
     password: string;
     password_confirmation: string;
+    [key: string]: string | ROLE;
+}
+
+enum ROLE {
+    BUYER = 'buyer',
+    AGENT = 'agent',
 }
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm<RegisterForm>({
         name: '',
         email: '',
+        role: ROLE.BUYER,
         password: '',
         password_confirmation: '',
     });
@@ -67,6 +76,24 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="role">Role</Label>
+                        <Select
+                            onValueChange={(value) => setData('role', value as ROLE)}
+                        >
+                            <SelectTrigger 
+                                id='role'
+                                value={data.role}
+                            >
+                                <SelectValue placeholder="Buyer" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="buyer">Buyer</SelectItem>
+                                <SelectItem value="agent">Agent</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="grid gap-2">
