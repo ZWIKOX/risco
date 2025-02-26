@@ -8,10 +8,19 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('home', function () {
+        return Inertia::render('home');
+    })->name('home');
+
+    Route::get('addproperty', function () {
+        return Inertia::render('addproperty');
+    })->name('addproperty');
+     Route::get('properties', function () {
+         return Inertia::render('properties');
+     })->name('properties');
+   
 });
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/property.php';
