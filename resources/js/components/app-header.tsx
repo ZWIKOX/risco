@@ -23,7 +23,7 @@ const agentNavItems: NavItem[] = [
     },
     {
         title: 'Properties List',
-        url: '/properties/list',
+        url: '/properties',
         icon: LucideHome,
     },
     {

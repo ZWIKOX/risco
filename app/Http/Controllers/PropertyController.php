@@ -9,18 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 
-class PropertyController extends Controller
+class PropertyController extends Controller 
+
 {
     /**
      * Display a listing of properties.
      */
     public function index(): \Inertia\Response
-    {
-        $properties = Property::with('images')->get();
+{
+        $properties = Property::with('images')->latest()->get();
         return Inertia::render('properties/index', [
-        'properties' => $properties
+            'properties' => $properties
     ]);
-    } 
+} 
 
     /**
      * Show the form for creating a new property.
@@ -42,11 +43,9 @@ class PropertyController extends Controller
 
         if ($request->hasFile('images')) {
             $images = $request->file('images');
-            if (is_array($images) || $images instanceof Traversable) {
-                foreach ($images as $image) {
-                    $path = $image->store('property-images', 'public');
-                    $property->images()->create(['image_url' => $path]);
-                }
+            foreach ($images as $image) {
+                $path = $image->store('property-images', 'public');
+                $property->images()->create(['image_url' => $path]);
             }
         }
         
