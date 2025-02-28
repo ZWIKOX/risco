@@ -12,9 +12,6 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('home');
     })->name('home');
 
-    Route::get('addproperty', function () {
-        return Inertia::render('addproperty');
-    })->name('addproperty');
      Route::get('properties', function () {
          return Inertia::render('properties');
      })->name('properties');

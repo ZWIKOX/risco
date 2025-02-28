@@ -39,6 +39,8 @@ class PropertyController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = Auth::id();
 
+        
+        
         $property = Property::create($validated);
 
         if ($request->hasFile('images')) {
@@ -83,23 +85,26 @@ class PropertyController extends Controller
         $property = Property::findOrFail($id);
         $property->update($validated);
 
-        // Delete images if requested
-        if ($request->has('delete_images')) {
-            $property->images()->whereIn('id', $request->delete_images)->delete();
-        }
-
-        // Add new images if provided
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
-            if (is_array($images) || $images instanceof Traversable) {
-                foreach ($images as $image) {
-                    $path = $image->store('property-images', 'public');
-                    $property->images()->create([
-                        'image_url' => $path
-                    ]);
-                }
+       // Handle deleted images
+       if ($request->has('deleted_images')) {
+        foreach ($request->deleted_images as $imageId) {
+            $image = $property->images()->find($imageId);
+            if ($image) {
+                Storage::delete('public/' . $image->image_url);
+                $image->delete();
             }
         }
+    }
+
+    // Handle new images
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('property_images', 'public');
+            $property->images()->create([
+                'image_url' => $path,
+            ]);
+        }
+    }
         
 
         return redirect()->route('properties.show', $id);

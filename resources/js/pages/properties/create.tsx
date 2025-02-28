@@ -22,7 +22,7 @@ export default function AddProperty() {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Add Property',
-            href: '/addproperty',
+            href: '/property/create',
         },
     ];
     

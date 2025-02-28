@@ -31,7 +31,7 @@ class UpdatePropertyRequest extends FormRequest
             'address' => ['string'],
             'city' => ['string'],
             'state' => ['string', 'size:2'],
-            'zip' => ['string', 'size:5'],
+            'zip' => ['string', 'size:5','max:5'],
             'type' => ['string', 'in:house,apartment,villa'],
             'status' => ['string', 'in:for_sale,for_rent,sold,rented'],
             'images.*' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
