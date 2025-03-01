@@ -45,3 +45,10 @@ export enum ROLE {
     BUYER = 'buyer',
     AGENT = 'agent',
 }
+export interface AgentStats {
+    total: number;
+    for_sale: number;
+    for_rent: number;
+    sold: number;
+    rented?: number;
+  }
