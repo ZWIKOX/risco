@@ -50,6 +50,7 @@ export default function Edit({ property }: EditProps) {
     zip: property.zip,
     status: property.status,
     images: [] as File[],
+    delete_images: [] as number[],
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,6 +61,14 @@ export default function Edit({ property }: EditProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setData("images", Array.from(e.target.files));
+    }
+  };
+
+  const toggleDeleteImage = (id: number) => {
+    if (data.delete_images.includes(id)) {
+      setData("delete_images", data.delete_images.filter((imgId: number) => imgId !== id));
+    } else {
+      setData("delete_images", [...data.delete_images, id]);
     }
   };
 
@@ -78,7 +87,7 @@ export default function Edit({ property }: EditProps) {
             <CardTitle>Edit Property</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
               {/* Title */}
               <div>
                 <Label htmlFor="title">Title</Label>
@@ -237,6 +246,33 @@ export default function Edit({ property }: EditProps) {
                   </SelectContent>
                 </Select>
                 {errors.status && <div className="text-red-600 text-sm">{errors.status}</div>}
+              </div>
+
+              {/* Existing Images */}
+              <div>
+                <Label>Existing Images</Label>
+                {property.images.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-4">
+                    {property.images.map((img) => (
+                      <div key={img.id} className="relative">
+                        <img
+                          src={`/storage/${img.image_url}`}
+                          alt={`Image ${img.id}`}
+                          className={`w-full h-32 object-cover rounded ${data.delete_images.includes(img.id) ? "opacity-50" : ""}`}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => toggleDeleteImage(img.id)}
+                          className="absolute top-1 right-1 bg-red-600 text-white px-2 py-1 text-xs rounded"
+                        >
+                          {data.delete_images.includes(img.id) ? "Undo" : "Delete"}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-600">No images available</div>
+                )}
               </div>
 
               {/* New Images */}
