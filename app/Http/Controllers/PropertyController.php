@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
+use Illuminate\Support\Facades\Gate;
 
 class PropertyController extends Controller 
 
@@ -28,6 +29,7 @@ class PropertyController extends Controller
      */
     public function create(): \Inertia\Response
     {
+        Gate::authorize('create-property');
         return Inertia::render('properties/create');
     }
 
