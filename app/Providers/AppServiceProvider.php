@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('create-property', function (User $user) {
+          return $user->role == "agent";
+        });
     }
 }
